@@ -1,6 +1,6 @@
 import { useState } from "react";
 import BookItem from "./components/bookItem/bookItem";
-import BookSearch from "./components/BookSearch/BookSearch"
+import BookSearch from "./components/BookSearch/BookSearch";
 
 function Books({ books }) {
   const [selectedBookTitle, setSelectedBookTitle] = useState("");
@@ -8,8 +8,7 @@ function Books({ books }) {
 
   const handleBookSelected = (title) => {
     setSelectedBookTitle(title);
-
-};
+  };
 
   const handleSearchChange = (query) => {
     setSearchQuery(query);
@@ -21,17 +20,20 @@ function Books({ books }) {
 
   return (
     <>
-    
       <BookSearch onSearchChange={handleSearchChange} />
-      
+
       {selectedBookTitle && (
-        <p style={{fontWeight: 'bold', textAlign: 'center', width: '100%'}}>
+        <p style={{
+          fontWeight: 'bold',
+          textAlign: 'center',
+          width: '100%'
+        }}>
           Libro seleccionado: {selectedBookTitle}
         </p>
       )}
-      {bookSelected && <p>El libro seleccionado es: <span className="fw-bold">{bookSelected} </span></p>}
+
       <div className="d-flex justify-content-center flex-wrap my-5">
-        {books.map(book => (
+        {filteredBooks.map(book => (
           <BookItem
             key={book.id}
             title={book.title}

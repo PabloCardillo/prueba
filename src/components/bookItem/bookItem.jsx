@@ -1,4 +1,5 @@
 import { Badge, Button, Card } from "react-bootstrap";
+import { StarFill, Star } from "react-bootstrap-icons";
 
 const BookItem = ({ title, author, rating, pageCount, imageUrl, available, onBookSelected, selectedTitle }) => {
   
@@ -20,6 +21,14 @@ const BookItem = ({ title, author, rating, pageCount, imageUrl, available, onBoo
         <Card.Title style={{fontWeight: title === selectedTitle ? 'bold' : 'normal'}}>
           {title}
         </Card.Title>
+        <div className="mt-2">
+            {Array.from({ length: rating }).map((_, i) => (
+              <StarFill key={`filled-${i}`} color="gold" />
+            ))}
+            {Array.from({ length: 5 - rating}).map((_, i) =>(
+              <Star key={`empty-${i}`} color="gold"/>
+            ))}
+          </div>
         <Card.Text>Autor: {author}</Card.Text>
         <Card.Text>Calificación: {rating}</Card.Text>
         <Card.Text>Páginas: {pageCount}</Card.Text>
@@ -32,6 +41,5 @@ const BookItem = ({ title, author, rating, pageCount, imageUrl, available, onBoo
   )
   
 }
-
 
 export default BookItem;
