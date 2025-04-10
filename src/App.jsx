@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import BookItem from './components/bookItem/bookItem'
+import BookItem from './components/library/bookItem/bookItem'
 import Books from './book'
-import NewBook from './components/newBook/newBook'
+import NewBook from './components/library/newBook/newBook'
+import Login from './components/auth/login/login'
 
 
 function App() {
@@ -63,11 +64,13 @@ function App() {
 
   return (
     <>
+      <Login/>
       <div className='d-flex flex-column align-items-center'>
         <h2>Book champions app</h2>
         <p>Quiero leer libros</p>
         <NewBook onBookAdded ={handleBookAdded} />
       <Books books={bookList} />
+      
       </div>   
       
     </>

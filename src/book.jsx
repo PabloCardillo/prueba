@@ -1,6 +1,6 @@
 import { useState } from "react";
-import BookItem from "./components/bookItem/bookItem";
-import BookSearch from "./components/BookSearch/BookSearch";
+import BookItem from "./components/library/bookItem/bookItem";
+import BookSearch from "./components/library/BookSearch/BookSearch";
 
 function Books({ books }) {
   const [selectedBookTitle, setSelectedBookTitle] = useState("");
