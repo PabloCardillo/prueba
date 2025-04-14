@@ -5,11 +5,12 @@ import BookItem from './components/library/bookItem/bookItem'
 import Books from './book'
 import NewBook from './components/library/newBook/newBook'
 import Login from './components/auth/login/login'
+import ModalConfirm from './components/UI/modalConfirm'
 
 
 function App() {
   
-  const books = [
+  const [bookList, setBookList] = useState([
     {
       id: 1,
       title: "100 años de soledad",
@@ -50,9 +51,21 @@ function App() {
         "https://prodimage.images-bn.com/pimages/9781728260839_p0_v2_s1200x630.jpg",
       available: true
     },
-  ];
+  ]);
 
-  const [bookList, setBookList] = useState(books);
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleDeleteRequest = (book) => {
+    setSelectedBook(book);
+    setModalVisible(true);
+  };
+
+  const handleConfirmDelete = () => {
+    setBooks((prevBooks) => prevBooks.filter((b) => b.id !== selectedBook.id));
+    setModalVisible(false);
+    setSelectedBook(null);
+  }
 
   const handleBookAdded = (enteredBook) => {
     const bookData = {
@@ -68,10 +81,18 @@ function App() {
       <div className='d-flex flex-column align-items-center'>
         <h2>Book champions app</h2>
         <p>Quiero leer libros</p>
-        <NewBook onBookAdded ={handleBookAdded} />
-      <Books books={bookList} />
-      
-      </div>   
+        <NewBook onBookAdded ={handleBookAdded} />   
+      </div>
+      <div className='container text-center my-4'>
+        <h2>Lista de libros</h2>
+        <Books books={bookList}  onDeleteBook={handleDeleteRequest}/>
+        <ModalConfirm
+          show={modalVisible}
+          onHide={() => setModalVisible(false)}
+          onConfirm={handleConfirmDelete}
+          bookTitle={selectedBook?.title}
+        />
+      </div>
       
     </>
   )

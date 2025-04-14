@@ -2,7 +2,7 @@ import { useState } from "react";
 import BookItem from "./components/library/bookItem/bookItem";
 import BookSearch from "./components/library/BookSearch/BookSearch";
 
-function Books({ books }) {
+function Books({ books, onDeleteBook }) {
   const [selectedBookTitle, setSelectedBookTitle] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -33,7 +33,7 @@ function Books({ books }) {
       )}
 
       <div className="d-flex justify-content-center flex-wrap my-5">
-        {filteredBooks.map(book => (
+        {books.map((book) => (
           <BookItem
             key={book.id}
             title={book.title}
@@ -44,6 +44,8 @@ function Books({ books }) {
             available={book.available}
             onBookSelected={handleBookSelected}
             selectedTitle={selectedBookTitle}
+            {...book}
+            onDelete={() => onDeleteBook(book)}
           />
         ))}
       </div>

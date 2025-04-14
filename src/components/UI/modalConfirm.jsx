@@ -14,7 +14,7 @@ function ModalConfirm ({ show, onHide, onConfirm, bookTitle }) {
                     Cancelar
                 </Button>
                 <Button variant="danger" onClick={onConfirm}>
-                    Si, Deseo eliminarlo
+                    Si, Confirmar
                 </Button>
             </Modal.Footer>
         </Modal>

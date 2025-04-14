@@ -1,14 +1,14 @@
 import { Badge, Button, Card } from "react-bootstrap";
 import { StarFill, Star } from "react-bootstrap-icons";
 
-const BookItem = ({ title, author, rating, pageCount, imageUrl, available, onBookSelected, selectedTitle }) => {
+const BookItem = ({ title, author, rating, pageCount, imageUrl, available, onDelete, onBookSelected, selectedTitle }) => {
   
   const handleClick = () => {
     onBookSelected(title);
   }
   
   return (
-    <Card className="mx-3" style={{ width: "18rem" }}>
+    <Card className="mx-3 my-3 text-center" style={{ width: "18rem" }}>
       <Card.Img variant="top" src={imageUrl} alt={title} />
       <Card.Body>
         <div className="mb-2">
@@ -36,6 +36,7 @@ const BookItem = ({ title, author, rating, pageCount, imageUrl, available, onBoo
           Seleccionar libro
         </Button>
         <Card.Text>{available ? "Disponible" : "No disponible"}</Card.Text>
+        <Button variant="danger" size="lg" className="mt-3 px-4 py-2 w-100" onClick={onDelete}></Button>
       </Card.Body>
     </Card>
   )
