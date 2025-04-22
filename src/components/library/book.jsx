@@ -1,6 +1,6 @@
 import { useState } from "react";
-import BookItem from "./components/library/bookItem/bookItem";
-import BookSearch from "./components/library/BookSearch/BookSearch";
+import BookItem from "./bookItem/bookItem";
+import BookSearch from "./bookSearch/bookSearch";
 
 function Books({ books, onDeleteBook }) {
   const [selectedBookTitle, setSelectedBookTitle] = useState("");
@@ -18,6 +18,9 @@ function Books({ books, onDeleteBook }) {
     book.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  console.log("Libros filtrados que se muestran:", filteredBooks);
+
+
   return (
     <>
       <BookSearch onSearchChange={handleSearchChange} />
@@ -33,9 +36,10 @@ function Books({ books, onDeleteBook }) {
       )}
 
       <div className="d-flex justify-content-center flex-wrap my-5">
-        {books.map((book) => (
+        {filteredBooks.map((book) => (
           <BookItem
             key={book.id}
+            id={book.id}
             title={book.title}
             author={book.author}
             rating={book.rating}
@@ -44,8 +48,7 @@ function Books({ books, onDeleteBook }) {
             available={book.available}
             onBookSelected={handleBookSelected}
             selectedTitle={selectedBookTitle}
-            {...book}
-            onDelete={() => onDeleteBook(book)}
+            onDelete={() => onDeleteBook(book)} // ✅ función anónima
           />
         ))}
       </div>

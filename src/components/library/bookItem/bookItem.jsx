@@ -1,46 +1,78 @@
-import { Badge, Button, Card } from "react-bootstrap";
-import { StarFill, Star } from "react-bootstrap-icons";
+import { Card, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-const BookItem = ({ title, author, rating, pageCount, imageUrl, available, onDelete, onBookSelected, selectedTitle }) => {
-  
-  const handleClick = () => {
-    onBookSelected(title);
-  }
-  
+function BookItem({
+  id,
+  title,
+  author,
+  rating,
+  pageCount,
+  imageUrl,
+  available,
+  onBookSelected,
+  selectedTitle,
+  onDelete,
+}) {
+  const isSelected = selectedTitle === title;
+
   return (
-    <Card className="mx-3 my-3 text-center" style={{ width: "18rem" }}>
-      <Card.Img variant="top" src={imageUrl} alt={title} />
-      <Card.Body>
-        <div className="mb-2">
-          {available ?
-            <Badge bg="success">Disponible</Badge>
-            :
-            <Badge bg="danger">Reservado</Badge>
-          }
-        </div>
-        <Card.Title style={{fontWeight: title === selectedTitle ? 'bold' : 'normal'}}>
-          {title}
-        </Card.Title>
-        <div className="mt-2">
-            {Array.from({ length: rating }).map((_, i) => (
-              <StarFill key={`filled-${i}`} color="gold" />
-            ))}
-            {Array.from({ length: 5 - rating}).map((_, i) =>(
-              <Star key={`empty-${i}`} color="gold"/>
-            ))}
-          </div>
-        <Card.Text>Autor: {author}</Card.Text>
-        <Card.Text>Calificación: {rating}</Card.Text>
-        <Card.Text>Páginas: {pageCount}</Card.Text>
-        <Button onClick={handleClick}>
-          Seleccionar libro
-        </Button>
-        <Card.Text>{available ? "Disponible" : "No disponible"}</Card.Text>
-        <Button variant="danger" size="lg" className="mt-3 px-4 py-2 w-100" onClick={onDelete}></Button>
-      </Card.Body>
-    </Card>
-  )
-  
+    <Link to={`/library/${id}`} style={{ textDecoration: "none", color: "inherit" }}>
+      <Card
+        style={{
+          width: "18rem",
+          border: isSelected ? "2px solid green" : "1px solid #ccc",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        }}
+        className="mx-3 mb-4"
+        onClick={() => onBookSelected(title)}
+      >
+        <Card.Img
+          variant="top"
+          src={imageUrl}
+          alt={title}
+          style={{ height: "250px", objectFit: "cover" }}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "https://via.placeholder.com/250x350?text=Imagen+no+disponible";
+          }}
+        />
+        <Card.Body>
+          <Card.Title>{title}</Card.Title>
+          <Card.Text>
+            <strong>Autor:</strong> {author}<br />
+            <strong>Rating:</strong> {rating} / 5<br />
+            <strong>Páginas:</strong> {pageCount}<br />
+            <strong>Disponible:</strong> {available ? "Sí" : "No"}
+          </Card.Text>
+          <Button
+            variant="danger"
+            size="sm"
+            className="w-100"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
+          >
+            Eliminar libro
+          </Button>
+
+          <Button
+            variant="primary"
+            className="w-100 mt-2"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/library/${id}`, {
+                state: { book: { id, title, author, rating, pageCount, imageUrl, available } }
+              });
+            }}
+          >
+            Seleccionar libro
+          </Button>
+
+        </Card.Body>
+      </Card>
+    </Link>
+  );
 }
 
 export default BookItem;
