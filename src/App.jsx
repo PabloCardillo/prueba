@@ -50,8 +50,6 @@ function App() {
     },
   ]);
 
-  console.log(bookList)
-
   const [selectedBook, setSelectedBook] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
