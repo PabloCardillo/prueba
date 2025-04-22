@@ -17,7 +17,6 @@ function Dashboard({
   onCloseModal,
   
 }) {
-  console.log("Libros que llegan al Dashboard:", bookList);
 
   const navigate = useNavigate();
 
@@ -25,9 +24,6 @@ function Dashboard({
     setLoggedIn(false);
     navigate("/login");
   };
-  
-  console.log("Se está renderizando el Dashboard");
-
 
   return (
     <div className="container py-4 text-center">

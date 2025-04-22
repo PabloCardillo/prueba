@@ -11,7 +11,7 @@ function BookDetails() {
     return (
       <div className="text-center mt-5">
         <h2>Libro no encontrado</h2>
-        <Button onClick={() => navigate("/library")}>Volver</Button>
+        <Button onClick={() => navigate("/library")}> Volver </Button>
       </div>
     );
   }
@@ -31,11 +31,17 @@ function BookDetails() {
         <Card.Body>
           <Card.Title>{book.title}</Card.Title>
           <Card.Text>
-            <strong>Autor:</strong> {book.author}<br />
-            <strong>Rating:</strong> {book.rating} / 5<br />
-            <strong>Páginas:</strong> {book.pageCount}<br />
+            <strong>Autor:</strong> {book.author}
+            <br />
+            <strong>Rating:</strong> {book.rating} / 5
+            <br />
+            <strong>Páginas:</strong> {book.pageCount}
+            <br />
             <strong>Disponible:</strong> {book.available ? "Sí" : "No"}
+            <br />
+            <strong>Resumen:</strong> <span className="d-block mt-2"><p>{book.summary}</p></span>
           </Card.Text>
+
           <Button variant="secondary" onClick={() => navigate("/library")}>
             Volver a la lista
           </Button>

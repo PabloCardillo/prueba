@@ -18,9 +18,6 @@ function Books({ books, onDeleteBook }) {
     book.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  console.log("Libros filtrados que se muestran:", filteredBooks);
-
-
   return (
     <>
       <BookSearch onSearchChange={handleSearchChange} />
@@ -46,9 +43,10 @@ function Books({ books, onDeleteBook }) {
             pageCount={book.pageCount}
             imageUrl={book.imageUrl}
             available={book.available}
+            summary={book.summary}
             onBookSelected={handleBookSelected}
             selectedTitle={selectedBookTitle}
-            onDelete={() => onDeleteBook(book)} // ✅ función anónima
+            onDelete={() => onDeleteBook(book)} // función anónima
           />
         ))}
       </div>
