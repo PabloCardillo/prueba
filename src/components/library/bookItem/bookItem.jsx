@@ -1,5 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom"; 
+import { StarFill, Star } from "react-bootstrap-icons";
 
 function BookItem({
   id,
@@ -43,12 +44,23 @@ function BookItem({
         <Card.Text>
           <strong>Autor:</strong> {author}
           <br />
-          <strong>Rating:</strong> {rating} / 5
-          <br />
+          <strong>Rating:</strong> {rating} / 5 
+          <div className="mt-2">
+            {Array.from({ length: 5 }, (_, index) =>
+              index < rating ? (
+                <StarFill key={index} color="gold" />
+              ) : (
+                <Star key={index} color="gold" />
+              )
+            )}
+          </div>
+          
           <strong>Páginas:</strong> {pageCount}
           <br />
           <strong>Disponible:</strong> {available ? "Sí" : "No"}
         </Card.Text>
+
+        
 
         <Button
           variant="danger"

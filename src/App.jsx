@@ -51,7 +51,7 @@ function App() {
       imageUrl:
         "https://prodimage.images-bn.com/pimages/9781728260839_p0_v2_s1200x630.jpg",
       available: true,
-      summary:"50 Sombras de Grey:Cuando la joven Anastasia conoce al poderoso y enigmático Christian Grey, comienzan un excitante, sensual y atormentado romance. Erótica, entretenida y profundamente conmovedora, la serie Cincuenta sombras es una historia que te cautivará, te poseerá y se quedará contigo por siempre.",
+      summary:"50 Sombras de Grey: Cuando la joven Anastasia conoce al poderoso y enigmático Christian Grey, comienzan un excitante, sensual y atormentado romance. Erótica, entretenida y profundamente conmovedora, la serie Cincuenta sombras es una historia que te cautivará, te poseerá y se quedará contigo por siempre.",
     },
   ]);
 

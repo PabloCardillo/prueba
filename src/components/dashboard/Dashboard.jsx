@@ -4,7 +4,7 @@ import NewBook from "../library/newBook/newBook";
 import ModalConfirm from "../UI/modalConfirm";
 import BookDetails from "../library/bookDetails";
 import { Button } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Dashboard({
   setLoggedIn,
@@ -24,6 +24,10 @@ function Dashboard({
     setLoggedIn(false);
     navigate("/login");
   };
+
+  useEffect(() => {
+    fetch("http:")
+  })
 
   return (
     <div className="container py-4 text-center">
