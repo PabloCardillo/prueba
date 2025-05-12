@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 
-const NewBook = ({ onBookAdded }) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [rating, setRating] = useState("");
-  const [pageCount, setPageCount] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [available, setAvailable] = useState(false);
+const BookForm = ({ 
+  book,
+  onBookAdded,
+  isEditing = false
+}) => {
+  const [title, setTitle] = useState(book?.title);
+  const [author, setAuthor] = useState(book?.author);
+  const [rating, setRating] = useState(book?.rating);
+  const [pageCount, setPageCount] = useState(book?.pageCount);
+  const [imageUrl, setImageUrl] = useState(book?.imageUrl);
+  const [available, setAvailable] = useState(book?.available);
 
   const handleAddBook = (event) => {
     event.preventDefault();
@@ -112,14 +116,24 @@ const NewBook = ({ onBookAdded }) => {
                 onChange={(e) => setAvailable(e.target.checked)}
               />
               <Button variant="primary" type="submit">
-                Agregar lectura
+                {isEditing ? "Editar lectura" : "Agregar lectura"}
               </Button>
             </Col>
           </Row>
+
+          <Row>
+            <Button className="mb-2 me-2" variant="secondary" onClick={handleShowBookForm}>
+              {showBookForm ? "Ocultar formulario" : "Editar libro"}
+            </Button>
+            <Button className="me-2" onClick={clickHandler}>
+              Volver a la pagina principal
+            </Button>
+          </Row>
+
         </Form>
       </Card.Body>
     </Card>
   );
 };
 
-export default NewBook;
+export default BookForm;

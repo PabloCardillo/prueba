@@ -45,7 +45,12 @@ function BookItem({
           <strong>Autor:</strong> {author}
           <br />
           <strong>Rating:</strong> {rating} / 5 
-          <div className="mt-2">
+          <strong>Páginas:</strong> {pageCount}
+          <br />
+          <strong>Disponible:</strong> {available ? "Sí" : "No"}
+        </Card.Text>
+
+        <div className="mt-2">
             {Array.from({ length: 5 }, (_, index) =>
               index < rating ? (
                 <StarFill key={index} color="gold" />
@@ -54,13 +59,6 @@ function BookItem({
               )
             )}
           </div>
-          
-          <strong>Páginas:</strong> {pageCount}
-          <br />
-          <strong>Disponible:</strong> {available ? "Sí" : "No"}
-        </Card.Text>
-
-        
 
         <Button
           variant="danger"

@@ -43,58 +43,76 @@ const Login = ({ onLogin }) => {
 
     setErrors({ email: false, password: false });
     alert(`El email ingresado es: ${email} y el password es ${password}`);
-    onLogin(); // ✅ cambia el estado en App.jsx
-    navigate("/library"); // ✅ redirige al dashboard
-  };
+    onLogin(); // cambia el estado en App.jsx
+    fetch("http://localhost:3000/login", {
+      headers: {
+        "content-type" : "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify({email, password })
+    })
+      .then(res => res.json())
+      .then(token => {
+        localStorage.setItem("book-cahmpions-token", token)
+        navigate("/library");
+      })
+      .catch(err => console.error(err));
+  }
 
   return (
     <div className="d-flex justify-content-center">
       <Card className="mt-5 mx-3 p-3 px-5 shadow">
         <Card.Body>
-          <Row className="mb-2">
-            <h5>¡Bienvenidos a Books Champion!</h5>
-          </Row>
-          <Form onSubmit={handleLogin}>
-            <FormGroup className="mb-4">
-              <Form.Control
-                type="text"
-                className={`input-email ${errors.email ? "border border-danger" : ""}`}
-                placeholder="Ingresar email"
-                onChange={handleEmailChange}
-                value={email}
-                ref={emailRef}
-              />
-              {errors.email && <p className="text-danger">El campo email es obligatorio</p>}
-            </FormGroup>
-            <FormGroup className="mb-4">
-              <Form.Control
-                type="password"
-                required
-                ref={passwordRef}
-                placeholder="Ingresar contraseña"
-                onChange={handlePasswordChange}
-                value={password}
-              />
-              {errors.password && (
-                <p className="text-danger">
-                  La contraseña debe tener al menos 7 caracteres
-                </p>
-              )}
-            </FormGroup>
-            <Row>
-              <Col />
-              <Col md={6} className="d-flex justify-content-end">
-                <Button
-                  variant="secondary"
-                  type="submit"
-                  size="lg"
-                  className="px-5 py-2 w-100"
-                >
-                  Iniciar sesión
-                </Button>
-              </Col>
+          <AuthContainer>
+            <Row className="mb-2">
+              <h5>¡Bienvenidos a Books Champion!</h5>
             </Row>
-          </Form>
+            <Form onSubmit={handleLogin}>
+              <FormGroup className="mb-4">
+                <Form.Control
+                  type="text"
+                  className={`input-email ${errors.email ? "border border-danger" : ""}`}
+                  placeholder="Ingresar email"
+                  onChange={handleEmailChange}
+                  value={email}
+                  ref={emailRef}
+                />
+                {errors.email && <p className="text-danger">El campo email es obligatorio</p>}
+              </FormGroup>
+              <FormGroup className="mb-4">
+                <Form.Control
+                  type="password"
+                  required
+                  ref={passwordRef}
+                  placeholder="Ingresar contraseña"
+                  onChange={handlePasswordChange}
+                  value={password}
+                />
+                {errors.password && (
+                  <p className="text-danger">
+                    La contraseña debe tener al menos 7 caracteres
+                  </p>
+                )}
+              </FormGroup>
+              <Row>
+                <Col />
+                <Col md={6} className="d-flex justify-content-end">
+                  <Button
+                    variant="secondary"
+                    type="submit"
+                    size="lg"
+                    className="px-5 py-2 w-100"
+                  >
+                    Iniciar sesión
+                  </Button>
+                </Col>
+              </Row>
+              <Row className="mt-4">
+                <p className="text-center fw-bold">¿Aun no tienes cuenta?</p>
+                <Button onClick={handleRegisteClick}>Registrarse</Button>
+              </Row>
+            </Form>
+          </AuthContainer>
         </Card.Body>
       </Card>
     </div>

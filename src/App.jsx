@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import Login from "./components/auth/login/login";
-import Dashboard from "./components/dashboard/dashboard";
+import Dashboard from "./components/dashboard/Dashboard.jsx"
 import NotFound from "./components/notFound";
 import Protected from "./components/protected";
 import ModalConfirm from "./components/UI/modalConfirm";
 import BookItem from "./components/library/bookItem/bookItem";
+import Register from "./components/auth/register/register.jsx";
 
 function App() {
   const [bookList, setBookList] = useState([
@@ -73,9 +74,9 @@ function App() {
     setSelectedBook(null);
   };
 
-  const handleBookAdded = (newBook) => {
+  const handleBookAdded = (bookForm) => {
     const bookData = {
-      ...newBook,
+      ...bookForm,
       id: Math.random(),
     };
     setBookList((prev) => [bookData, ...prev]);
@@ -97,6 +98,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login onLogin={handleLogIn} />} />
+        <Route path="/register" element={<Register />} /> 
         <Route
           path="/library/*"
           element={

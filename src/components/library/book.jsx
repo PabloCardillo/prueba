@@ -46,7 +46,7 @@ function Books({ books, onDeleteBook }) {
             summary={book.summary}
             onBookSelected={handleBookSelected}
             selectedTitle={selectedBookTitle}
-            onDelete={() => onDeleteBook(book)} // función anónima
+            onDelete={() => onDeleteBook(book.id)} // función anónima
           />
         ))}
       </div>

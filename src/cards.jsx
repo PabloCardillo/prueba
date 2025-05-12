@@ -1,6 +1,6 @@
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 
-const NewBook = () => {
+const bookForm = () => {
     return (
         <Card className="m-4 w-50" bg="success">
             <Card.Body>
@@ -68,4 +68,4 @@ const NewBook = () => {
 };
 
 
-export default NewBook;
+export default bookForm;

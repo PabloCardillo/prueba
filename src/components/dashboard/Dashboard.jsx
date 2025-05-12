@@ -1,10 +1,12 @@
-import { Routes, Route, useNavigate, Outlet } from "react-router";
+import { Routes, Route, useNavigate, Outlet, data } from "react-router";
 import Books from "../library/book";
-import NewBook from "../library/newBook/newBook";
+import BookForm from "../library/newBook/newBook";
 import ModalConfirm from "../UI/modalConfirm";
 import BookDetails from "../library/bookDetails";
 import { Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import { Bounce, toast } from "react-toastify";
+import { successToast } from "../UI/notifications/notifications";
 
 function Dashboard({
   setLoggedIn,
@@ -22,12 +24,103 @@ function Dashboard({
 
   const handleLogout = () => {
     setLoggedIn(false);
-    navigate("/login");
+    localStorage.removeItem("book-champions-token")
   };
 
+  const handleBookUpdate = (book) => {
+    setBook(book);
+  }
+
+  const handleBookAdded = (enteredBook) => {
+    if (!enteredBook.title || !enteredBook.author) {
+      toast.error("El autor y/o titulo son requeridos", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+    fetch("http://localhost:3000/books", {
+      headers: {
+        "content-type": "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify(enteredBook)
+    })
+      .then(res => res.json())
+      .then(data => {
+        setBookList(prevBookList => [data, ...prevBookList]);
+        successToast(`¡Libro ${data.title} agregado correctamente!`)
+      })
+      .catch(err => console.log(err));
+  }
+
+  const handleDeleteBook = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/books/${id}`, {
+        method: "DELETE",
+      });
+  
+      if (!response.ok) {
+        throw new Error("Error al eliminar el libro");
+      }
+  
+      const result = await response.text(); // La API responde con texto
+      console.log(result);
+  
+      // Eliminar del estado
+      setBookList(prevBookList => prevBookList.filter(book => book.id !== id));
+  
+      successToast("¡Libro eliminado correctamente!");
+    } catch (error) {
+      console.error("Error eliminando libro:", error);
+    }
+  };  
+
+  const handleSaveBook = (event) => {
+    event.preventDefault();
+
+    const bookData = {
+      title,
+      author,
+      rating: parseInt(rating, 10),
+      pageCount: parseInt(pageCount, 10),
+      imageUrl,
+      available
+    };
+
+    fetch(`http://localhost:3000/books/${book.id}`, {
+      headers: {
+        "Content-type" : "application/json"
+      },
+      method: "PUT",
+      body: JSON.stringify(bookData)
+    })
+      .then(res => res.json())
+      .then(() => {
+        onBookSaved(bookData);
+      })
+      .catch(err => console.log(err))
+  }
+
+  const handleNavigateAddBook = () => {
+    navigate("add-book");
+  }
+
   useEffect(() => {
-    fetch("http:")
-  })
+    if (location.pathname === "/library") {
+      fetch("http://localhost:3000/books")
+        .then(res => res.json())
+        .then(data => setBookList([...data]))
+        .catch(err => console.log(err));
+    }
+  }, [location])
 
   return (
     <div className="container py-4 text-center">
@@ -71,7 +164,7 @@ function Dashboard({
           element={
             <>
               <h3>Agregar un nuevo libro</h3>
-              <NewBook onBookAdded={onBookAdded} />
+              <BookForm onBookAdded={onBookAdded} />
             </>
           }
         />
