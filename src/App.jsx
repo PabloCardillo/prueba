@@ -106,6 +106,7 @@ function App() {
               <Dashboard
                 setLoggedIn={setLoggedIn}
                 bookList={bookList}
+                setBookList={setBookList}
                 onDeleteBook={handleDeleteRequest}
                 onBookAdded={handleBookAdded}
                 selectedBook={selectedBook}

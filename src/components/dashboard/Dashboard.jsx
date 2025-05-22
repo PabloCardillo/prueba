@@ -7,10 +7,13 @@ import { Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import { successToast } from "../UI/notifications/notifications";
+import { Book } from "react-bootstrap-icons";
+import { useLocation } from "react-router-dom";
 
 function Dashboard({
   setLoggedIn,
   bookList,
+  setBookList,
   onDeleteBook,
   onBookAdded,
   selectedBook,
@@ -21,6 +24,8 @@ function Dashboard({
 }) {
 
   const navigate = useNavigate();
+
+  const location = useLocation();
 
   const handleLogout = () => {
     setLoggedIn(false);
@@ -46,9 +51,13 @@ function Dashboard({
       });
       return;
     }
+
+    const token = localStorage.getItem("book-champions-token");
+
     fetch("http://localhost:3000/books", {
       headers: {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
       method: "POST",
       body: JSON.stringify(enteredBook)
@@ -63,6 +72,8 @@ function Dashboard({
 
   const handleDeleteBook = async (id) => {
     try {
+      const token = localStorage.getItem("book-champions-token");
+
       const response = await fetch(`http://localhost:3000/books/${id}`, {
         method: "DELETE",
       });
@@ -95,9 +106,10 @@ function Dashboard({
       available
     };
 
-    fetch(`http://localhost:3000/books/${book.id}`, {
+    fetch(`http://localhost:3000/books/${Book.id}`, {
       headers: {
-        "Content-type" : "application/json"
+        "Content-type" : "application/json",
+        "Authorization": `Bearer ${token}`
       },
       method: "PUT",
       body: JSON.stringify(bookData)
@@ -114,17 +126,37 @@ function Dashboard({
   }
 
   useEffect(() => {
-    if (location.pathname === "/library") {
-      fetch("http://localhost:3000/books")
-        .then(res => res.json())
-        .then(data => setBookList([...data]))
-        .catch(err => console.log(err));
+    const token = localStorage.getItem("book-champions-token");
+
+    if (location.pathname === "/library" && token) {
+      fetch("http://localhost:3000/books", {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("book-champions-token")}`
+        }
+      })
+        .then(res => {
+          if (!res.ok) {
+            throw new Error("No autorizado");
+          }
+          return res.json();
+        })
+        .then(data => {
+          if (!Array.isArray(data)) {
+            throw new Error("Respuesta inválida del servidor");
+          }
+          setBookList([...data]);
+        })
+        .catch(err => {
+          console.error("Error al obtener libros:", err.message);
+        });
     }
-  }, [location])
+  }, [location]);
+
 
   return (
     <div className="container py-4 text-center">
-      { /* Encabezado */}
+      
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Books Champion</h2>
         <div>

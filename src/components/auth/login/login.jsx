@@ -24,7 +24,7 @@ const Login = ({ onLogin }) => {
     setErrors({ ...errors, password: false });
   };
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
     if (!emailRef.current.value.length) {
@@ -41,29 +41,43 @@ const Login = ({ onLogin }) => {
       return;
     }
 
-    setErrors({ email: false, password: false });
-    alert(`El email ingresado es: ${email} y el password es ${password}`);
-    onLogin(); // cambia el estado en App.jsx
-    fetch("http://localhost:3000/login", {
-      headers: {
-        "content-type" : "application/json"
-      },
-      method: "POST",
-      body: JSON.stringify({email, password })
-    })
-      .then(res => res.json())
-      .then(token => {
-        localStorage.setItem("book-cahmpions-token", token)
-        navigate("/library");
-      })
-      .catch(err => console.error(err));
-  }
+    try {
+      const res = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        alert(`Error: ${err.message}`);
+        return;
+      }
+
+      const token = await res.json();
+      console.log("Token recibido:", token); // ✅ Esto mostrará el JWT en consola
+
+      localStorage.setItem("book-champions-token", token); // ✅ IMPORTANTE: bien escrito
+
+      onLogin(); // cambia el estado en App.jsx
+      navigate("/library");
+    } catch (err) {
+      console.error("Error en login:", err);
+      alert("Hubo un error al intentar iniciar sesión");
+    }
+  };
+
+
+  const handleRegisterClick = () => {
+    navigate("/register");
+  };
 
   return (
     <div className="d-flex justify-content-center">
       <Card className="mt-5 mx-3 p-3 px-5 shadow">
         <Card.Body>
-          <AuthContainer>
             <Row className="mb-2">
               <h5>¡Bienvenidos a Books Champion!</h5>
             </Row>
@@ -109,10 +123,9 @@ const Login = ({ onLogin }) => {
               </Row>
               <Row className="mt-4">
                 <p className="text-center fw-bold">¿Aun no tienes cuenta?</p>
-                <Button onClick={handleRegisteClick}>Registrarse</Button>
+                <Button onClick={handleRegisterClick}>Registrarse</Button>
               </Row>
             </Form>
-          </AuthContainer>
         </Card.Body>
       </Card>
     </div>
